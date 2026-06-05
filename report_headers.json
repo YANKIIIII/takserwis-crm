@@ -1,0 +1,157 @@
+{
+  "Kasa - Raport dokumentów - 2026-05-31 19_57.xlsx": [
+    "Lp",
+    "Dokument",
+    "Klient",
+    "Data",
+    "Przychód",
+    "Rozchód"
+  ],
+  "Kasa - Raport szczegółowy pozycji - 2026-05-31 19_57.xlsx": [
+    "Lp",
+    "Dokument",
+    "Klient",
+    "Data",
+    "Nazwa pozycji",
+    "Przychód",
+    "Rozchód"
+  ],
+  "Klienci - Zestawienie zleceń - 2026-05-31 19_56.xlsx": [
+    "Lp",
+    "Zlecenie",
+    "Pojazd",
+    "Wartość netto",
+    "Wartość brutto"
+  ],
+  "Magazyn - Przyjęcia towarów - 2026-05-31 19_59.xlsx": [
+    "Lp",
+    "Nazwa",
+    "Kod towaru",
+    "Data",
+    "Przyjęto",
+    "Wydano",
+    "Pozostało"
+  ],
+  "Magazyn - Rezerwacje towarów - 2026-05-31 19_59.xlsx": [
+    "Lp",
+    "Rezerwacja",
+    "Zlecenie",
+    "Nazwa",
+    "Kod",
+    "Ilość",
+    "Cena",
+    "Wartość",
+    "Utworzony",
+    "Zrealizowany"
+  ],
+  "Magazyn - Ruchy magazynowe towarów - 2026-05-31 19_59.xlsx": [
+    "Kod towaru",
+    "Nazwa",
+    "Data",
+    "Dokument",
+    "Cena",
+    "Zmiana"
+  ],
+  "Magazyn - Spis z natury - 2026-05-31 19_58.xlsx": [
+    "Lp",
+    "Nazwa",
+    "Kod towaru",
+    "Stan",
+    "Cena",
+    "Wartość"
+  ],
+  "Magazyn - Stan magazynu - 2026-05-31 19_59.xlsx": [
+    "Lp",
+    "Nazwa",
+    "Kod towaru",
+    "Jend.",
+    "Stan",
+    "Rezerwacja",
+    "Dostępne"
+  ],
+  "Pojazdy - Historia pojazdu - 2026-05-31 19_58.xlsx": [],
+  "Pracownicy - Porównanie szacowanego i rzeczywistego czasu pracy - 2026-05-31 19_57.xlsx": [
+    "Pracownik",
+    "Nazwa",
+    "Rozpoczęcie",
+    "Zakończenie",
+    "Szac. czas",
+    "Przepr. czas",
+    "Różnica"
+  ],
+  "Pracownicy - Raport czasu pracy - 2026-05-31 19_56.xlsx": [
+    "Data",
+    "Serhii Maliarenko",
+    "Paweł Adamowicz",
+    "Vasyl Mendryshora",
+    "Marcin Kuczyński",
+    "Andrii Yermakov"
+  ],
+  "Pracownicy - Rozliczenie pracowników - 2026-05-31 19_56.xlsx": [
+    "Data",
+    "Serhii Maliarenko",
+    "Paweł Adamowicz",
+    "Vasyl Mendryshora",
+    "Marcin Kuczyński",
+    "Andrii Yermakov"
+  ],
+  "Pracownicy - Szczegółowe rozliczenie pracowników - 2026-05-31 19_56.xlsx": [
+    "Zlecenie",
+    "Zadanie",
+    "Wartość zadania",
+    "Wartość rozliczenia"
+  ],
+  "Pracownicy - Szczegółowy raport rzeczywistego czasu pracy - 2026-05-31 19_56.xlsx": [
+    "Przepr. czas",
+    "Wartość netto",
+    "Wartość brutto"
+  ],
+  "Sprzedaż - Szczegółowe zestawienie sprzedaży - 2026-05-31 19_55.xlsx": [
+    "Lp",
+    "Nazwa",
+    "Ilość",
+    "Jedn.",
+    "Koszt",
+    "Przychód",
+    "Zysk"
+  ],
+  "Sprzedaż - Zestawienie dokumentów - 2026-05-31 19_55.xlsx": [
+    "Lp",
+    "Numer dokumentu",
+    "NIP klienta",
+    "Data wyst.",
+    "Data sprz.",
+    "Termin płatnościmetoda płatności",
+    "Zapłacono",
+    "Do zapłaty",
+    "Razem"
+  ],
+  "Sprzedaż - Zestawienie dokumentów WZ do sprzedaży - 2026-05-31 19_55.xlsx": [
+    "Lp.",
+    "Rodzaj dokumentu",
+    "Nr dokumentu sprzedaży",
+    "Data dokumentu sprzedaży",
+    "Wartość netto pozycji towarowych sprzedaży",
+    "Nr dokumentu WZ",
+    "Data dokumentu WZ",
+    "Koszt zakupu"
+  ],
+  "Zlecenia - Szczegółowe zestawienie zleceń - 2026-05-31 19_54.xlsx": [
+    "Pracownik",
+    "Nazwa",
+    "Rodzaj",
+    "Indeks",
+    "Jedn.",
+    "Ilość",
+    "Koszt",
+    "Przychód",
+    "Zysk"
+  ],
+  "Zlecenia - Szczegółowy raport rzeczywistego czasu pracy - 2026-05-31 19_55.xlsx": [
+    "Pracownik",
+    "Nazwa",
+    "Data rozpoczęcia",
+    "Data zakończenia",
+    "Przepr. czas"
+  ]
+}

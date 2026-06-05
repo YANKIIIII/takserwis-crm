@@ -1,0 +1,309 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ── Клиенты ──────────────────────────────────────────────
+model Customer {
+  id               Int       @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  phone            String
+  email            String?
+  postalCode       String?
+  city             String?
+  country          String?   @default("Polska")
+  street           String?
+  
+  defaultVehicleId Int?
+  paymentMethod    String?
+  paymentTerm      String?
+  discountServices Float?    @default(0)
+  discountGoods    Float?    @default(0)
+  marketingConsent Boolean   @default(false)
+
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  vehicles         Vehicle[]
+  calendarEvents   CalendarEvent[]
+  tireStorages     TireStorage[]
+  tags             Tag[]
+}
+
+// ── Автомобили ───────────────────────────────────────────
+model Vehicle {
+  id               Int       @id @default(autoincrement())
+  brand            String
+  model            String
+  year             Int?
+  vin              String?
+  plate            String
+  mileage          Int?
+  mileageUnit      String?   @default("km")
+  color            String?
+  capacity         Int?
+  fuelType         String?
+  engineNumber     String?
+  enginePower      Int?
+  description      String?
+  aztecCode        String?
+  registrationDate DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  customerId Int
+  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  workOrders   WorkOrder[]
+  estimates    Estimate[]
+  tireStorages TireStorage[]
+}
+
+// ── Механики ─────────────────────────────────────────────
+model Mechanic {
+  id             Int       @id @default(autoincrement())
+  name           String
+  specialization String?
+  phone          String?
+  status         String    @default("available") // available, busy, off
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  workOrders     WorkOrder[]
+}
+
+// ── Заказ-наряды ─────────────────────────────────────────
+model WorkOrder {
+  id            Int       @id @default(autoincrement())
+  status        String    @default("pending") // pending, in_progress, done
+  description   String?
+  totalAmount   Float     @default(0)
+  estimatedHours Float    @default(0)
+  workedHours    Float    @default(0)
+  receivedAt       DateTime  @default(now())
+  estimatedDone    DateTime?
+  completedAt      DateTime?
+
+  returnParts      Boolean   @default(false)
+  testDrive        Boolean   @default(false)
+  registrationCert Boolean   @default(false)
+  fillFluids       Boolean   @default(false)
+  fillLights       Boolean   @default(false)
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  order            Int       @default(0)
+
+  isDeleted        Boolean   @default(false)
+  deletedAt        DateTime?
+
+  vehicleId     Int
+  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  mechanicId    Int?
+  mechanic      Mechanic? @relation(fields: [mechanicId], references: [id], onDelete: SetNull)
+
+  items         OrderItem[]
+  warehouseDocs WarehouseDocument[]
+  tags          Tag[]
+}
+
+// ── Позиции заказ-наряда (работы + запчасти) ─────────────
+model OrderItem {
+  id              Int       @id @default(autoincrement())
+  name            String
+  quantity        Float     @default(1)
+  unitPrice       Float
+  discount        Float     @default(0) // percentage
+  mechanicPay     Float     @default(0) // payout for the mechanic for this item
+  type            String    @default("part") // part, service
+  createdAt       DateTime  @default(now())
+
+  workOrderId     Int
+  workOrder       WorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+
+  inventoryItemId Int?
+  inventoryItem   InventoryItem? @relation(fields: [inventoryItemId], references: [id], onDelete: SetNull)
+}
+
+// ── Касса (Kasa) ─────────────
+model CashDocument {
+  id             Int       @id @default(autoincrement())
+  type           String    // "KP" or "KW"
+  documentNumber String
+  date           DateTime
+  amount         Float
+  description    String?
+  clientId       Int?
+  clientName     String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// ── Склад (Magazyn) ─────────────
+model InventoryItem {
+  id             Int       @id @default(autoincrement())
+  itemCode       String    @unique
+  name           String
+  category       String    @default("Inne")
+  quantity       Float     @default(0)
+  minStock       Float     @default(0)
+  unit           String    @default("szt.")
+  purchasePrice  Float     @default(0)
+  sellPrice      Float     @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  orderItems     OrderItem[]
+}
+
+model WarehouseDocument {
+  id             Int       @id @default(autoincrement())
+  type           String    // "PZ" (Purchase) or "FV" (Sales)
+  documentNumber String
+  date           DateTime
+  dueDate        DateTime?
+  status         String    @default("draft") // draft, sent, paid, overdue, ordered, delivered
+  contractorName String?
+  totalValue     Float     @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  workOrderId    Int?
+  workOrder      WorkOrder? @relation(fields: [workOrderId], references: [id], onDelete: SetNull)
+
+  items          WarehouseDocumentItem[]
+}
+
+model WarehouseDocumentItem {
+  id                  Int       @id @default(autoincrement())
+  warehouseDocumentId Int
+  warehouseDocument   WarehouseDocument @relation(fields: [warehouseDocumentId], references: [id], onDelete: Cascade)
+  itemCode            String
+  name                String
+  quantity            Float
+  price               Float
+  createdAt           DateTime  @default(now())
+}
+
+// ── Użytkownicy (Users) ─────────────
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String   // hashed
+  role      String   @default("mechanic") // admin, mechanic, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Zadania (Tasks) ─────────────
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  assignee  String?
+  priority  String   @default("medium") // high, medium, low
+  status    String   @default("todo") // todo, in_progress, done
+  due       String?  // YYYY-MM-DD
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Int      @default(0)
+
+  isDeleted Boolean  @default(false)
+  deletedAt DateTime?
+}
+
+// ── Wydarzenia w Kalendarzu (CalendarEvents) ─────────────
+model CalendarEvent {
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String   // YYYY-MM-DD
+  hour      String   // HH:mm
+  mechanic  String?
+  color     String   @default("#4A7BF7")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+// ── Ustawienia aplikacji (Settings) ─────────────
+model AppSetting {
+  key   String @id
+  value String
+}
+
+// ── Tagi i Kategorie (Tags & Categories) ─────────────
+model Tag {
+  id        Int      @id @default(autoincrement())
+  entity    String   // 'product_category', 'work_order_status', itp.
+  name      String
+  color     String   @default("var(--secondary)")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  customers  Customer[]
+  workOrders WorkOrder[]
+
+  @@unique([entity, name])
+}
+
+// ── Сметы / Оценки (Wyceny) ──────────────────────────────
+model Estimate {
+  id            Int       @id @default(autoincrement())
+  status        String    @default("draft") // draft, accepted, rejected, converted
+  description   String?
+  totalAmount   Float     @default(0)
+  validUntil    DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  vehicleId     Int
+  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  items         EstimateItem[]
+}
+
+model EstimateItem {
+  id              Int       @id @default(autoincrement())
+  name            String
+  quantity        Float     @default(1)
+  unitPrice       Float
+  discount        Float     @default(0) 
+  type            String    @default("part") // part, service
+  
+  estimateId      Int
+  estimate        Estimate  @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+}
+
+// ── Przechowalnia Opon (TireStorage) ─────────────
+model TireStorage {
+  id              Int       @id @default(autoincrement())
+  customerId      Int
+  customer        Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicleId       Int?
+  vehicle         Vehicle?  @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+
+  season          String    // Zima, Lato, Wielosezonowe
+  type            String    // Opony, Koła
+  brandAndModel   String
+  size            String
+  treadDepth      String?
+  storageLocation String?
+  status          String    @default("W magazynie") // W magazynie, Wydane
+  depositDate     DateTime  @default(now())
+  returnDate      DateTime?
+  notes           String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}

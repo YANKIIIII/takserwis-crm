@@ -31,7 +31,9 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +41,46 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+# --- Added for Project Cleanup ---
+# Databases
+*.db
+*.db-journal
+
+# Logs & Binaries
+*.log
+*.exe
+
+# Temporary folders
+temp-optima/
+docs/
+
+# One-off scripts and data dumps
+dump-*.ts
+find-*.ts
+fix-*.ts
+import-*.ts
+test-*.ts
+test-*.js
+cleanup.ts
+count*.ts
+wipe.ts
+bulk-import.ts
+seed-time.ts
+generate-reports.js
+create-reports.js
+verify-totals.ts
+verify-totals.js
+parse_excel_headers.js
+extract-thoughts.js
+
+# Ignore all JSON data files in root except package configs
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!report_headers.json
+
+import-test.js
